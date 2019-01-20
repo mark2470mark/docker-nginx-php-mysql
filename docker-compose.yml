@@ -18,16 +18,28 @@ services:
             - php
             - mysqldb
     php:
-        image: nanoninja/php-fpm:${PHP_VERSION}
+        build:
+            context: ./fpm
         restart: always
         volumes:
             - "./etc/php/php.ini:/usr/local/etc/php/conf.d/php.ini"
             - "./web:/var/www/html"
-    composer:
-        image: "composer"
+
+
+    memcached:
+        image: memcached
+        restart: always
+
+    mongodb:
+        image: library/mongo:3.4.9
         volumes:
-            - "./web/app:/app"
-        command: install
+           - ./data/mongodb:/data/db
+           - /etc/localtime:/etc/localtime:ro
+        ports:
+           - "27117:27017"
+        restart: always
+        privileged: true
+
     myadmin:
         image: phpmyadmin/phpmyadmin
         container_name: phpmyadmin
