@@ -51,6 +51,7 @@ services:
         restart: always
         depends_on:
             - mysqldb
+
     mysqldb:
         image: mysql:${MYSQL_VERSION}
         container_name: ${MYSQL_HOST}
@@ -64,6 +65,6 @@ services:
             - MYSQL_PASSWORD=${MYSQL_PASSWORD}
         ports:
             - "3306:3306"
-        command: mysql --sql_mode=""
+        command: mysqld --sql_mode=""
         volumes:
             - "./data/db/mysql:/var/lib/mysql"
